@@ -6,13 +6,14 @@
 
     <properties resource="settings.properties"></properties>
     <!-- 数据库驱动包位置 -->
-    <classPathEntry location="C:/Users/Administrator/.m2/repository/mysql/mysql-connector-java/6.0.6/mysql-connector-java-6.0.6.jar"/> <!-- 1 -->
+    <classPathEntry
+            location="C:/Users/Administrator/.m2/repository/mysql/mysql-connector-java/6.0.6/mysql-connector-java-6.0.6.jar"/> <!-- 1 -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!-- 数据库链接URL、用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+        <jdbcConnection driverClass="${db.driverClassName}"
                         connectionURL="${db.url}" userId="${db.username}"
                         password="${db.password}">  <!-- 2 -->
         </jdbcConnection>
@@ -51,7 +52,7 @@
                selectByExampleQueryId="false"/>
         <table tableName="sys_role_acl" domainObjectName="SysRoleAcl" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+               selectByExampleQueryId="false" />
         <table tableName="sys_role_user" domainObjectName="SysRoleUser" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>

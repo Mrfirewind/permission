@@ -17,6 +17,11 @@
     <context:component-scan base-package="com.zhangwq.controller"/>
     <context:component-scan base-package="com.zhangwq.service"/>
 
+    <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/css/" mapping="/css/**"/>
+    <mvc:resources location="/bootstrap3.3.5/" mapping="/bootstrap3.3.5/**"/>
+    <mvc:resources location="/assets/" mapping="/assets/**"/>
+
     <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>-->
 
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
@@ -24,7 +29,7 @@
     <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/views/"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 

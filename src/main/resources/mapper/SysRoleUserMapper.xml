@@ -2,13 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhangwq.dao.SysRoleUserMapper" >
   <resultMap id="BaseResultMap" type="com.zhangwq.model.SysRoleUser" >
-    <result column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="INTEGER" />
     <result column="role_id" property="roleId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
     <result column="operate_ip" property="operateIp" jdbcType="VARCHAR" />
   </resultMap>
+  <sql id="Base_Column_List" >
+    id, role_id, user_id, operator, operate_time, operate_ip
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_role_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="com.zhangwq.model.SysRoleUser" >
     insert into sys_role_user (id, role_id, user_id, 
       operator, operate_time, operate_ip
@@ -60,4 +73,34 @@
       </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhangwq.model.SysRoleUser" >
+    update sys_role_user
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateIp != null" >
+        operate_ip = #{operateIp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhangwq.model.SysRoleUser" >
+    update sys_role_user
+    set role_id = #{roleId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_ip = #{operateIp,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>
