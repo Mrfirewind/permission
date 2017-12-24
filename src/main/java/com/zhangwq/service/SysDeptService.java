@@ -1,11 +1,13 @@
 package com.zhangwq.service;
 
 import com.google.common.base.Preconditions;
+import com.zhangwq.common.RequestHolder;
 import com.zhangwq.dao.SysDeptMapper;
 import com.zhangwq.exception.ParamException;
 import com.zhangwq.model.SysDept;
 import com.zhangwq.param.DeptParam;
 import com.zhangwq.util.BeanValidator;
+import com.zhangwq.util.IpUtil;
 import com.zhangwq.util.LevelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,9 +32,8 @@ public class SysDeptService implements ISysDeptService {
         }
         SysDept sysDept = SysDept.builder().name(deptParam.getName()).parentId(deptParam.getParentId()).seq(deptParam.getSeq()).remark(deptParam.getRemark()).build();
         sysDept.setLevel(LevelUtil.calculateLevel(this.getLevel(deptParam.getParentId()), deptParam.getParentId()));
-        //TODO
-        sysDept.setOperateIp("");
-        sysDept.setOperator("");
+        sysDept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        sysDept.setOperator(RequestHolder.getCurrentUser().getUsername());
         sysDept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(sysDept);
     }
@@ -48,9 +49,8 @@ public class SysDeptService implements ISysDeptService {
 
         SysDept afterDept = SysDept.builder().id(deptParam.getId()).name(deptParam.getName()).parentId(deptParam.getParentId()).seq(deptParam.getSeq()).remark(deptParam.getRemark()).build();
         afterDept.setLevel(LevelUtil.calculateLevel(this.getLevel(deptParam.getParentId()), deptParam.getParentId()));
-        //TODO
-        afterDept.setOperateIp("");
-        afterDept.setOperator("");
+        afterDept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        afterDept.setOperator(RequestHolder.getCurrentUser().getUsername());
         afterDept.setOperateTime(new Date());
         updateWithChild(beforeDept, afterDept);
     }

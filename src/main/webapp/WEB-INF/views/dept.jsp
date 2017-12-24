@@ -10,6 +10,7 @@
 <head>
     <title>部门管理</title>
     <jsp:include page="/common/backend_common.jsp"/>
+    <jsp:include page="/common/page.jsp"/>
 </head>
 
 <body class="no-skin" youdao="bind" style="background: white">
