@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <%
     String ret = request.getParameter("ret");
-    if (StringUtils.isNotBlank(ret)) {
+    if(StringUtils.isNotBlank(ret)) {
         ret = URLEncoder.encode(ret);
     } else {
         ret = "";
@@ -28,8 +28,7 @@
     <link href="css/signin.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]>
-    <script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--[if lt IE 9]><script src="js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -45,10 +44,9 @@
     <form class="form-signin" action="/login.page?ret=<%=ret%>" method="post">
         <h2 class="form-signin-heading">请登陆</h2>
         <label for="inputEmail" class="sr-only">邮箱/电话</label>
-        <input type="text" id="inputEmail" class="form-control" placeholder="Email/Telephone" name="username" required
-               autofocus value="${username}">
+        <input type="text" id="inputEmail" class="form-control" placeholder="Email/Telephone" name="username" required autofocus value="${username}">
         <label for="inputPassword" class="sr-only">密码</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required >
         <div class="checkbox" style="color: red;">${error}</div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">登 陆</button>
     </form>

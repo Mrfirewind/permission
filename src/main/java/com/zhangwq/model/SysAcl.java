@@ -1,7 +1,16 @@
 package com.zhangwq.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.Date;
 
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysAcl {
     private Integer id;
 

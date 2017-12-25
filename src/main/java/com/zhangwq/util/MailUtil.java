@@ -1,6 +1,5 @@
 package com.zhangwq.util;
 
-
 import com.zhangwq.beans.Mail;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +38,5 @@ public class MailUtil {
             return false;
         }
     }
-
 }
 

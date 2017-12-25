@@ -55,8 +55,9 @@ public class UserController {
         if (StringUtils.isNotBlank(ret)) {
             request.setAttribute("ret", ret);
         }
-        String path = "signin.jsp";
+        String path = "/signin.jsp";
         request.getRequestDispatcher(path).forward(request, response);
+        return;
     }
 
     @RequestMapping("/logout.page")

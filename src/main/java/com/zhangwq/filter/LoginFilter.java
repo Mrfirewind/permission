@@ -1,6 +1,5 @@
 package com.zhangwq.filter;
 
-import com.sun.deploy.net.HttpResponse;
 import com.zhangwq.common.RequestHolder;
 import com.zhangwq.model.SysUser;
 import lombok.extern.slf4j.Slf4j;
