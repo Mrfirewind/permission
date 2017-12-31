@@ -199,4 +199,20 @@
             AND id != #{id}
         </if>
     </select>
+
+    <select id="getAllAcl" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
+    </select>
+
+    <select id="getAclByIds" resultMap="BaseResultMap" parameterType="map">
+        select   <include refid="Base_Column_List"/>
+        from sys_acl
+        where id IN
+        <foreach collection="aclIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

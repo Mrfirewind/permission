@@ -83,6 +83,11 @@ public class sysUserService implements ISysUserService {
         return PageResult.<SysUser>builder().build();
     }
 
+    @Override
+    public List<SysUser> getAllUser() {
+        return sysUserMapper.getAllUser();
+    }
+
     private boolean checkEmailExist(String mail, Integer userId) {
         return sysUserMapper.countByEmail(mail, userId) > 0;
     }

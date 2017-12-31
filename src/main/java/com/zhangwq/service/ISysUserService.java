@@ -5,6 +5,8 @@ import com.zhangwq.beans.PageResult;
 import com.zhangwq.model.SysUser;
 import com.zhangwq.param.UserParam;
 
+import java.util.List;
+
 public interface ISysUserService {
 
     void saveUser(UserParam userParam);
@@ -14,4 +16,6 @@ public interface ISysUserService {
     SysUser findByKeyword(String keyword);
 
     PageResult getPageByDeptId(Integer deptId, PageQuery pageQuery);
+
+    List<SysUser> getAllUser();
 }

@@ -15,6 +15,8 @@ import java.util.List;
 public class AclModuleDto extends SysAclModule {
     private List<AclModuleDto> aclModuleList = Lists.newArrayList();
 
+    private List<AclDto> aclList = Lists.newArrayList();
+
     public static AclModuleDto adapt(SysAclModule sysAclModule) {
         AclModuleDto aclModuleDto = new AclModuleDto();
         BeanUtils.copyProperties(sysAclModule, aclModuleDto);

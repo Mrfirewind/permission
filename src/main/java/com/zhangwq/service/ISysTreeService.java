@@ -9,4 +9,6 @@ public interface ISysTreeService {
     List<DeptLevelDto> getDeptTree();
 
     List<AclModuleDto> getAclModuleTree();
+
+    List<AclModuleDto> roleTree(int roleId);
 }

@@ -203,4 +203,20 @@
         ORDER BY username ASC limit #{pageQuery.offset},#{pageQuery.pageSize}
     </select>
 
+    <select id="getByUserIds" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where id IN
+        <foreach collection="userIdList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+    </select>
+
 </mapper>

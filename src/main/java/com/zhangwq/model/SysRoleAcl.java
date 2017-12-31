@@ -1,7 +1,13 @@
 package com.zhangwq.model;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class SysRoleAcl {
     private Integer id;
 

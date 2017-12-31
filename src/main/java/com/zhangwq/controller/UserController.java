@@ -47,6 +47,7 @@ public class UserController {
                 response.sendRedirect(ret);
             } else {
                 response.sendRedirect("/admin/index.page");
+                return;
             }
         }
 
@@ -57,7 +58,6 @@ public class UserController {
         }
         String path = "/signin.jsp";
         request.getRequestDispatcher(path).forward(request, response);
-        return;
     }
 
     @RequestMapping("/logout.page")
