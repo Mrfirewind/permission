@@ -11,4 +11,6 @@ public interface ISysTreeService {
     List<AclModuleDto> getAclModuleTree();
 
     List<AclModuleDto> roleTree(int roleId);
+
+    List<AclModuleDto> userAclTree(int userId);
 }

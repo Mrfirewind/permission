@@ -1,4 +1,4 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.base.Preconditions;
 import com.zhangwq.beans.PageQuery;
@@ -8,6 +8,8 @@ import com.zhangwq.dao.SysAclMapper;
 import com.zhangwq.exception.ParamException;
 import com.zhangwq.model.SysAcl;
 import com.zhangwq.param.AclParam;
+import com.zhangwq.service.ISysAclService;
+import com.zhangwq.service.ISysLogService;
 import com.zhangwq.util.BeanValidator;
 import com.zhangwq.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class SysAclService implements ISysAclService {
     @Autowired
     private SysAclMapper sysAclMapper;
 
+    @Autowired
+    private ISysLogService sysLogService;
+
     @Override
     public void saveAcl(AclParam aclParam) {
         BeanValidator.check(aclParam);
@@ -36,6 +41,7 @@ public class SysAclService implements ISysAclService {
         sysAcl.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysAcl.setOperateTime(new Date());
         sysAclMapper.insertSelective(sysAcl);
+        sysLogService.saveAclLog(null, sysAcl);
     }
 
     @Override
@@ -54,6 +60,7 @@ public class SysAclService implements ISysAclService {
         afterSysAcl.setOperateTime(new Date());
 
         sysAclMapper.updateByPrimaryKeySelective(afterSysAcl);
+        sysLogService.saveAclLog(beforeSysAcl, afterSysAcl);
 
     }
 
@@ -71,7 +78,7 @@ public class SysAclService implements ISysAclService {
 
 
     private boolean checkExist(int aclModelId, String name, Integer id) {
-        return sysAclMapper.countByNameAndAclModuleId(aclModelId,name,id) > 0;
+        return sysAclMapper.countByNameAndAclModuleId(aclModelId, name, id) > 0;
     }
 
     private String generateCode() {

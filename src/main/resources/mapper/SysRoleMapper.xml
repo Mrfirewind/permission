@@ -141,4 +141,20 @@
         <include refid="Base_Column_List"/>
         from sys_role ORDER BY name ASC
     </select>
+
+    <select id="getRoleListByUserId" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role WHERE  user_id = #{userId} ORDER BY name ASC
+    </select>
+
+    <select id="getRoleListByRoleIds" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role
+        where id IN
+        <foreach collection="roleIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

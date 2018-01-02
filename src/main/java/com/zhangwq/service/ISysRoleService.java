@@ -12,4 +12,8 @@ public interface ISysRoleService {
     void updateRole(RoleParam roleParam);
 
     List<SysRole> getAllRole();
+
+    List<SysRole> getRoleListById(Integer userId);
+
+    List<SysRole> getRoleListByAclId(Integer aclId);
 }

@@ -7,4 +7,6 @@ public interface ISysDeptService {
     void saveDept(DeptParam deptParam);
 
      void updateDept(DeptParam deptParam);
+
+     void deleteDept(Integer deptId);
 }

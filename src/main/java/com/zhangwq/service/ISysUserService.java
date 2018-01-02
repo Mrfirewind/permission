@@ -18,4 +18,6 @@ public interface ISysUserService {
     PageResult getPageByDeptId(Integer deptId, PageQuery pageQuery);
 
     List<SysUser> getAllUser();
+
+    List<SysUser> getUserByRoleIdList(List<Integer> roleIdList);
 }

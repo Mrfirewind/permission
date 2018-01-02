@@ -1,4 +1,4 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -7,6 +7,7 @@ import com.zhangwq.dao.SysRoleUserMapper;
 import com.zhangwq.dao.SysUserMapper;
 import com.zhangwq.model.SysRoleUser;
 import com.zhangwq.model.SysUser;
+import com.zhangwq.service.ISysRoleUserService;
 import com.zhangwq.util.IpUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,11 @@ public class SysRoleUserService implements ISysRoleUserService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+
     @Override
     public List<SysUser> listUser(Integer roleId) {
         List<Integer> userIds = sysRoleUserMapper.getUserIdListByRoleId(roleId);
-        if(CollectionUtils.isEmpty(userIds)){
+        if (CollectionUtils.isEmpty(userIds)) {
             return Lists.newArrayList();
         }
 
@@ -48,7 +50,7 @@ public class SysRoleUserService implements ISysRoleUserService {
             }
         }
 
-        this.updateRoleUsers(roleId,userIds);
+        this.updateRoleUsers(roleId, userIds);
     }
 
     private void updateRoleUsers(int roleId, List<Integer> userIdList) {

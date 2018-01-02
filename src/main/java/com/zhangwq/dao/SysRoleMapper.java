@@ -21,4 +21,6 @@ public interface SysRoleMapper {
     int countByName(@Param("name") String name, @Param("id") Integer id);
 
     List<SysRole> getAllRole();
+
+    List<SysRole> getRoleListByRoleIds(@Param("roleIds") List<Integer> roleIds);
 }

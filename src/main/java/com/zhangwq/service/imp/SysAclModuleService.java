@@ -1,12 +1,15 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.base.Preconditions;
 import com.zhangwq.common.RequestHolder;
+import com.zhangwq.dao.SysAclMapper;
 import com.zhangwq.dao.SysAclModuleMapper;
 import com.zhangwq.exception.ParamException;
+import com.zhangwq.exception.PermissionException;
 import com.zhangwq.model.SysAclModule;
-import com.zhangwq.model.SysDept;
 import com.zhangwq.param.AclModuleParam;
+import com.zhangwq.service.ISysAclModuleService;
+import com.zhangwq.service.ISysLogService;
 import com.zhangwq.util.BeanValidator;
 import com.zhangwq.util.IpUtil;
 import com.zhangwq.util.LevelUtil;
@@ -24,6 +27,12 @@ public class SysAclModuleService implements ISysAclModuleService {
     @Autowired
     private SysAclModuleMapper sysAclModuleMapper;
 
+    @Autowired
+    private SysAclMapper sysAclMapper;
+
+    @Autowired
+    private ISysLogService sysLogService;
+
     @Override
     public void saveAclModule(AclModuleParam aclModuleParam) {
         BeanValidator.check(aclModuleParam);
@@ -37,6 +46,7 @@ public class SysAclModuleService implements ISysAclModuleService {
         sysAclModule.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysAclModule.setOperateTime(new Date());
         sysAclModuleMapper.insertSelective(sysAclModule);
+        sysLogService.saveAclModuleLog(null, sysAclModule);
     }
 
     @Override
@@ -53,6 +63,22 @@ public class SysAclModuleService implements ISysAclModuleService {
         afterSysAclModule.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         afterSysAclModule.setOperateTime(new Date());
         updateWithChild(beforeSysAclModule, afterSysAclModule);
+        sysLogService.saveAclModuleLog(beforeSysAclModule, afterSysAclModule);
+    }
+
+    @Override
+    public void deleteAclModule(Integer aclModuleId) {
+        SysAclModule sysAclModule = sysAclModuleMapper.selectByPrimaryKey(aclModuleId);
+        Preconditions.checkNotNull(sysAclModule, "删除的权限模块不存在,无法进行删除");
+        if (sysAclModuleMapper.countByParentId(aclModuleId) > 0) {
+            throw new PermissionException("删除权限模块的子模块不为空，无法删除");
+        }
+
+        if (sysAclMapper.countByAclModule(aclModuleId) > 0) {
+            throw new PermissionException("除权限模块的权限点不为空，无法删除");
+        }
+
+        sysAclModuleMapper.deleteByPrimaryKey(aclModuleId);
     }
 
     @Transactional

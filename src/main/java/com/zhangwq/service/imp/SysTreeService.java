@@ -1,4 +1,4 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -13,6 +13,8 @@ import com.zhangwq.dto.DeptLevelDto;
 import com.zhangwq.model.SysAcl;
 import com.zhangwq.model.SysAclModule;
 import com.zhangwq.model.SysDept;
+import com.zhangwq.service.ISysCoreService;
+import com.zhangwq.service.ISysTreeService;
 import com.zhangwq.util.LevelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -78,6 +80,21 @@ public class SysTreeService implements ISysTreeService {
             if (roleAclIdSet.contains(sysAcl.getId())) {
                 aclDto.setChecked(true);
             }
+            aclDtoList.add(aclDto);
+        }
+
+        return aclListToTree(aclDtoList);
+    }
+
+    @Override
+    public List<AclModuleDto> userAclTree(int userId) {
+        // 获取用户已分配的权限点
+        List<SysAcl> userAcls = sysCoreService.getUserAclList(userId);
+        List<AclDto> aclDtoList = Lists.newArrayList();
+        for (SysAcl sysAcl : userAcls) {
+            AclDto aclDto = AclDto.adapt(sysAcl);
+            aclDto.setHasAcl(true);
+            aclDto.setChecked(true);
             aclDtoList.add(aclDto);
         }
 

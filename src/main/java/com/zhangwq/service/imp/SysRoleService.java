@@ -1,13 +1,19 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.zhangwq.common.RequestHolder;
+import com.zhangwq.dao.SysRoleAclMapper;
 import com.zhangwq.dao.SysRoleMapper;
+import com.zhangwq.dao.SysRoleUserMapper;
 import com.zhangwq.exception.ParamException;
 import com.zhangwq.model.SysRole;
 import com.zhangwq.param.RoleParam;
+import com.zhangwq.service.ISysLogService;
+import com.zhangwq.service.ISysRoleService;
 import com.zhangwq.util.BeanValidator;
 import com.zhangwq.util.IpUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +25,16 @@ public class SysRoleService implements ISysRoleService {
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
+
+    @Autowired
+    private SysRoleUserMapper sysRoleUserMapper;
+
+    @Autowired
+    private SysRoleAclMapper sysRoleAclMapper;
+
+    @Autowired
+    private ISysLogService sysLogService;
+
 
     @Override
     public void saveRole(RoleParam roleParam) {
@@ -33,6 +49,7 @@ public class SysRoleService implements ISysRoleService {
         sysRole.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysRole.setOperateTime(new Date());
         sysRoleMapper.insertSelective(sysRole);
+        sysLogService.saveRoleLog(null, sysRole);
     }
 
     @Override
@@ -50,11 +67,32 @@ public class SysRoleService implements ISysRoleService {
         afterSysRole.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         afterSysRole.setOperateTime(new Date());
         sysRoleMapper.updateByPrimaryKeySelective(afterSysRole);
+        sysLogService.saveRoleLog(beforeSysRole, afterSysRole);
     }
 
     @Override
     public List<SysRole> getAllRole() {
         return sysRoleMapper.getAllRole();
+    }
+
+    @Override
+    public List<SysRole> getRoleListById(Integer userId) {
+        List<Integer> roleIds = sysRoleUserMapper.getRoleIdListByUserId(userId);
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Lists.newArrayList();
+        }
+
+        return sysRoleMapper.getRoleListByRoleIds(roleIds);
+    }
+
+    @Override
+    public List<SysRole> getRoleListByAclId(Integer aclId) {
+        List<Integer> roleIds = sysRoleAclMapper.getRoleIdListByAclId(aclId);
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Lists.newArrayList();
+        }
+
+        return sysRoleMapper.getRoleListByRoleIds(roleIds);
     }
 
     private boolean checkExist(String roleName, Integer roleId) {

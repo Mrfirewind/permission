@@ -1,17 +1,22 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.zhangwq.beans.PageQuery;
 import com.zhangwq.beans.PageResult;
 import com.zhangwq.common.RequestHolder;
+import com.zhangwq.dao.SysRoleUserMapper;
 import com.zhangwq.dao.SysUserMapper;
 import com.zhangwq.exception.ParamException;
 import com.zhangwq.model.SysUser;
 import com.zhangwq.param.UserParam;
+import com.zhangwq.service.ISysLogService;
+import com.zhangwq.service.ISysUserService;
 import com.zhangwq.util.BeanValidator;
 import com.zhangwq.util.IpUtil;
 import com.zhangwq.util.MD5Util;
 import com.zhangwq.util.PasswordUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +24,16 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class sysUserService implements ISysUserService {
+public class SysUserService implements ISysUserService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private SysRoleUserMapper sysRoleUserMapper;
+
+    @Autowired
+    private ISysLogService sysLogService;
 
     @Override
     public void saveUser(UserParam userParam) {
@@ -44,6 +55,7 @@ public class sysUserService implements ISysUserService {
 
         //TODO email
         sysUserMapper.insertSelective(sysUser);
+        sysLogService.saveUserLog(null, sysUser);
     }
 
     public void updateUser(UserParam userParam) {
@@ -63,6 +75,7 @@ public class sysUserService implements ISysUserService {
         afterUser.setOperator(RequestHolder.getCurrentUser().getUsername());
         afterUser.setOperateTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(afterUser);
+        sysLogService.saveUserLog(beforeUser, afterUser);
 
     }
 
@@ -86,6 +99,19 @@ public class sysUserService implements ISysUserService {
     @Override
     public List<SysUser> getAllUser() {
         return sysUserMapper.getAllUser();
+    }
+
+    @Override
+    public List<SysUser> getUserByRoleIdList(List<Integer> roleIdList) {
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return Lists.newArrayList();
+        }
+
+        List<Integer> userIdList = sysRoleUserMapper.getUserIdListByRoleIdList(roleIdList);
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return Lists.newArrayList();
+        }
+        return sysUserMapper.getByUserIds(userIdList);
     }
 
     private boolean checkEmailExist(String mail, Integer userId) {

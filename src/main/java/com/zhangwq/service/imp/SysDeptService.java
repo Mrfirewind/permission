@@ -1,11 +1,15 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.base.Preconditions;
 import com.zhangwq.common.RequestHolder;
 import com.zhangwq.dao.SysDeptMapper;
+import com.zhangwq.dao.SysUserMapper;
 import com.zhangwq.exception.ParamException;
+import com.zhangwq.exception.PermissionException;
 import com.zhangwq.model.SysDept;
 import com.zhangwq.param.DeptParam;
+import com.zhangwq.service.ISysDeptService;
+import com.zhangwq.service.ISysLogService;
 import com.zhangwq.util.BeanValidator;
 import com.zhangwq.util.IpUtil;
 import com.zhangwq.util.LevelUtil;
@@ -25,6 +29,12 @@ public class SysDeptService implements ISysDeptService {
     @Autowired
     private SysDeptMapper sysDeptMapper;
 
+    @Autowired
+    private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private ISysLogService sysLogService;
+
     public void saveDept(DeptParam deptParam) {
         BeanValidator.check(deptParam);
         if (checkExist(deptParam.getParentId(), deptParam.getName(), deptParam.getId())) {
@@ -36,6 +46,7 @@ public class SysDeptService implements ISysDeptService {
         sysDept.setOperator(RequestHolder.getCurrentUser().getUsername());
         sysDept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(sysDept);
+        sysLogService.saveDeptLog(null, sysDept);
     }
 
     public void updateDept(DeptParam deptParam) {
@@ -53,6 +64,22 @@ public class SysDeptService implements ISysDeptService {
         afterDept.setOperator(RequestHolder.getCurrentUser().getUsername());
         afterDept.setOperateTime(new Date());
         updateWithChild(beforeDept, afterDept);
+        sysLogService.saveDeptLog(beforeDept, afterDept);
+    }
+
+    @Override
+    public void deleteDept(Integer deptId) {
+        SysDept sysDept = sysDeptMapper.selectByPrimaryKey(deptId);
+        Preconditions.checkNotNull(sysDept, "删除的部门不存在,无法进行删除");
+        if (sysDeptMapper.countByParentId(deptId) > 0) {
+            throw new PermissionException("删除部门的子部门不为空，无法删除");
+        }
+
+        if (sysUserMapper.countByDeptId(deptId) > 0) {
+            throw new PermissionException("删除部门的用户不为空，无法删除");
+        }
+
+        sysDeptMapper.deleteByPrimaryKey(deptId);
     }
 
     @Transactional

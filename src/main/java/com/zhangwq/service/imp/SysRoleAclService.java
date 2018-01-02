@@ -1,10 +1,12 @@
-package com.zhangwq.service;
+package com.zhangwq.service.imp;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.zhangwq.common.RequestHolder;
 import com.zhangwq.dao.SysRoleAclMapper;
 import com.zhangwq.model.SysRoleAcl;
+import com.zhangwq.service.ISysLogService;
+import com.zhangwq.service.ISysRoleAclService;
 import com.zhangwq.util.IpUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ public class SysRoleAclService implements ISysRoleAclService {
                 return;
             }
         }
-        this.updateRoleAcls(roleId,aclIdList);
+        this.updateRoleAcls(roleId, aclIdList);
     }
 
     private void updateRoleAcls(int roleId, List<Integer> aclIdList) {

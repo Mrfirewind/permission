@@ -179,4 +179,7 @@
         from sys_acl_module
     </select>
 
+    <select id="countByParentId" resultType="int" parameterType="int">
+        select COUNT(1) from sys_acl_module WHERE parent_id = #{parentId}
+    </select>
 </mapper>

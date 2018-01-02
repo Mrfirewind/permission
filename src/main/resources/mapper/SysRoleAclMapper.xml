@@ -123,4 +123,9 @@
             (#{roleAcl.roleId}, #{roleAcl.aclId},#{roleAcl.operator}, #{roleAcl.operateTime}, #{roleAcl.operateIp})
         </foreach>
     </insert>
+    <select id="getRoleIdListByAclId" resultType="int" parameterType="map">
+        select role_id
+        from sys_role_acl
+        where acl_id = #{aclId}
+    </select>
 </mapper>
