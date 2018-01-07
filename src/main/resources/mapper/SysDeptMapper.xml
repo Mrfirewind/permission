@@ -35,7 +35,7 @@
       #{operator,jdbcType=VARCHAR}, now(), #{operateIp,jdbcType=VARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.zhangwq.model.SysDept">
+    <insert id="insertSelective" parameterType="com.zhangwq.model.SysDept" keyProperty="id" useGeneratedKeys="true">
         insert into sys_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

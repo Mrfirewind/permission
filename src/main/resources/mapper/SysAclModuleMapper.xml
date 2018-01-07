@@ -36,7 +36,7 @@
       #{remark,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
       #{operateIp,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.zhangwq.model.SysAclModule">
+    <insert id="insertSelective" parameterType="com.zhangwq.model.SysAclModule" keyProperty="id" useGeneratedKeys="true">
         insert into sys_acl_module
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

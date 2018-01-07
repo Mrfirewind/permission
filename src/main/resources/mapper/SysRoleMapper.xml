@@ -32,7 +32,7 @@
       #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
       #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.zhangwq.model.SysRole">
+    <insert id="insertSelective" parameterType="com.zhangwq.model.SysRole" keyProperty="id" useGeneratedKeys="true">
         insert into sys_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

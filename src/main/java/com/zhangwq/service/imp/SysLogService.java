@@ -162,11 +162,11 @@ public class SysLogService implements ISysLogService {
         } catch (Exception e) {
             throw new ParamException("传入的日期格式有问题，正确格式为：yyyy-MM-dd HH:mm:ss");
         }
-//        int count = sysLogMapper.countBySearchDto(dto);
-//        if (count > 0){
-//            List<SysLogWithBLOBs> logList = sysLogMapper.getPageListBySearchDto(dto, page);
-//            return PageResult.<SysLogWithBLOBs>builder().total(count).data(logList).build();
-//        }
+        int count = sysLogMapper.countBySearchDto(dto);
+        if (count > 0){
+            List<SysLogWithBLOBs> logList = sysLogMapper.getPageListBySearchDto(dto, page);
+            return PageResult.<SysLogWithBLOBs>builder().total(count).data(logList).build();
+        }
         return PageResult.<SysLogWithBLOBs>builder().build();
     }
 
